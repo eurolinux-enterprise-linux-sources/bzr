@@ -1,0 +1,21 @@
+diff -up bzr-2.5.1/bzrlib/transport/http/_urllib2_wrappers.py.cve2013-2099 bzr-2.5.1/bzrlib/transport/http/_urllib2_wrappers.py
+--- bzr-2.5.1/bzrlib/transport/http/_urllib2_wrappers.py.cve2013-2099	2013-05-23 12:07:10.582233513 -0700
++++ bzr-2.5.1/bzrlib/transport/http/_urllib2_wrappers.py	2013-05-23 12:08:34.177346810 -0700
+@@ -399,9 +399,16 @@ class HTTPConnection(AbstractHTTPConnect
+ 
+ # These two methods were imported from Python 3.2's ssl module
+ 
+-def _dnsname_to_pat(dn):
++def _dnsname_to_pat(dn, max_wildcards=1):
+     pats = []
+     for frag in dn.split(r'.'):
++        if frag.count('*') > max_wildcards:
++            # Issue #17980: avoid denials of service by refusing more
++            # than one wildcard per fragment.  A survery of established
++            # policy among SSL implementations showed it to be a
++            # reasonable choice.
++            raise errors.CertificateError(
++                "too many wildcards in certificate DNS name: " + repr(dn))
+         if frag == '*':
+             # When '*' is a fragment by itself, it matches a non-empty dotless
+             # fragment.

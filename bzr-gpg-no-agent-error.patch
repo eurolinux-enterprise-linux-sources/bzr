@@ -1,0 +1,44 @@
+Index: bzr-2.5.1/bzrlib/gpg.py
+===================================================================
+--- bzr-2.5.1.orig/bzrlib/gpg.py
++++ bzr-2.5.1/bzrlib/gpg.py
+@@ -190,7 +190,7 @@ class GPGStrategy(object):
+             # use the user email address
+             key = config.extract_email_address(self._config_stack.get('email'))
+         return [self._config_stack.get('gpg_signing_command'), '--clearsign',
+-                '-u', key, '--no-tty']
++                '-u', key]
+ 
+     def sign(self, content):
+         if isinstance(content, unicode):
+Index: bzr-2.5.1/bzrlib/tests/test_gpg.py
+===================================================================
+--- bzr-2.5.1.orig/bzrlib/tests/test_gpg.py
++++ bzr-2.5.1/bzrlib/tests/test_gpg.py
+@@ -51,7 +51,7 @@ class TestCommandLine(tests.TestCase):
+         self.my_gpg = gpg.GPGStrategy(FakeConfig())
+ 
+     def test_signing_command_line(self):
+-        self.assertEqual(['false',  '--clearsign', '-u', 'amy@example.com', '--no-tty'],
++        self.assertEqual(['false',  '--clearsign', '-u', 'amy@example.com'],
+                          self.my_gpg._command_line())
+ 
+     def test_signing_command_line_from_default(self):
+@@ -60,7 +60,7 @@ class TestCommandLine(tests.TestCase):
+ email=Amy <amy@example.com>
+ gpg_signing_key=default
+ gpg_signing_command=false'''))
+-        self.assertEqual(['false',  '--clearsign', '-u', 'amy@example.com', '--no-tty'],
++        self.assertEqual(['false',  '--clearsign', '-u', 'amy@example.com'],
+                          my_gpg._command_line())
+ 
+     def test_signing_command_line_from_email(self):
+@@ -68,7 +68,7 @@ gpg_signing_command=false'''))
+         my_gpg = gpg.GPGStrategy(FakeConfig('''
+ email=Amy <amy@example.com>
+ gpg_signing_command=false'''))
+-        self.assertEqual(['false',  '--clearsign', '-u', 'amy@example.com', '--no-tty'],
++        self.assertEqual(['false',  '--clearsign', '-u', 'amy@example.com'],
+                          my_gpg._command_line())
+ 
+     def test_checks_return_code(self):
