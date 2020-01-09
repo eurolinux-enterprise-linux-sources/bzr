@@ -13,7 +13,7 @@
 %global bzrmajor 2.5
 %global bzrminor .1
 #global bzrrc b6
-%global release 12
+%global release 14
 
 Name:           bzr
 Version:        %{bzrmajor}%{?bzrminor}
@@ -151,6 +151,12 @@ rm -rf $RPM_BUILD_ROOT
 %doc %{_defaultdocdir}/%{name}-doc-%{version}/*
 
 %changelog
+* Fri Jan 24 2014 Daniel Mach <dmach@redhat.com> - 2.5.1-14
+- Mass rebuild 2014-01-24
+
+* Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 2.5.1-13
+- Mass rebuild 2013-12-27
+
 * Tue May 28 2013 Toshio Kuratomi <toshio@fedoraproject.org> - 2.5.1-12
 - Patch for failure to gpg sign commits with no gpg-agent 
   https://bugzilla.redhat.com/show_bug.cgi?id=905087
